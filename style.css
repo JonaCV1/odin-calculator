@@ -22,12 +22,19 @@ main {
   background-color: #3c6382;
   padding: 10px;
   border-radius: 10px;
+  min-width: 400px;
 }
 
 div.screen {
+  display: flex;
+  justify-content: right;
+  padding-right: 5px;
+  padding-left: 10px;
+  align-items: center;
   height: 20%;
   background-color: gray;
   border: solid black 5px;
+  font-size: 60px;
 }
 
 div.buttons-container {
