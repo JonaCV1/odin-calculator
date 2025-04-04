@@ -41,7 +41,7 @@ function display(event) {
   ) {
     value = value + "0.";
     screen.textContent = `${value}`;
-  } else if (value.length <= 9 && value.length >= 1) {
+  } else if (value.length <= 8 && value.length >= 1) {
     value = value + `${event.target.id}`;
     screen.textContent = `${value}`;
   } else {
@@ -54,17 +54,79 @@ btnGreen.forEach((button) => {
   button.addEventListener("click", (event) => {
     if (value.includes(".") == false) {
       display(event);
-      console.log(value);
     } else if (value.includes(".") && event.target.id != ".") {
       display(event);
-      console.log(value);
     }
   });
 });
 
-console.log(operate("+", 2, 3));
-console.log(operate("-", 2, 3));
-console.log(operate("*", 2, 3));
-console.log(operate("/", 2, 3));
+const btnErase = document.querySelector("button#ac");
+btnErase.addEventListener("click", () => {
+  value = "";
+  result = "";
+  screen.textContent = `0`;
+});
+
+const btnPercentage = document.querySelector("button#percentage");
+btnPercentage.addEventListener("click", () => {
+  if (value.includes(".")) {
+    let afterDot = value.split(".");
+    if (afterDot[1].length >= 7) {
+      value = `${(Number(value) / 100).toFixed(afterDot[1].length)}`;
+    } else {
+      value = `${(Number(value) / 100).toFixed(afterDot[1].length + 2)}`;
+    }
+  } else {
+    value = `${Number(value) / 100}`;
+  }
+
+  if (value == "0" || Number(value) * 100 == 0) {
+    value = "";
+    screen.textContent = `0`;
+  } else {
+    screen.textContent = `${value}`;
+  }
+});
+
+const btnMinus = document.querySelector("button#minus");
+btnMinus.addEventListener("click", () => {
+  if (value == 0) {
+    value = "";
+    screen.textContent = `0`;
+  } else {
+    value = `${Number(value) * -1}`;
+    screen.textContent = `${value}`;
+  }
+});
+
+let operation = "";
+let numberOne = "";
+let numberTwo = "";
+let result = "";
+
+btnAdd = document.querySelector("button#add");
+btnAdd.addEventListener("click", () => {
+  if (result != "") {
+    numberOne = Number(result);
+    console.log(numberOne);
+    result = "";
+  } else {
+    numberOne = Number(value);
+    operation = "+";
+    value = "";
+  }
+});
+
+btnEqual = document.querySelector("button#equal");
+btnEqual.addEventListener("click", () => {
+  if (numberOne != "") {
+    let numberTwo = Number(value);
+    result = operate(operation, numberOne, numberTwo);
+    screen.textContent = `${result}`;
+  }
+  value = "";
+  numberOne = "";
+  numberTwo = "";
+});
 
 // máximo entero . más 8 digitos
