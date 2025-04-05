@@ -35,7 +35,7 @@ function display() {
   buttonsNumbers.forEach((button) => {
     button.addEventListener("click", (event) => {
       if (pressEqual == true) {
-        pressEqual == false;
+        pressEqual = false;
         number = "0";
         if (number == "0" && event.target.id != "." && event.target.id != "0") {
           number = "";
@@ -90,12 +90,14 @@ function display() {
 const buttonsNumbers = document.querySelectorAll("button.green");
 const screen = document.querySelector("div.screen");
 const btnAdd = document.querySelector("button#add");
+const btnMulti = document.querySelector("button#mult");
 const btnEqual = document.querySelector("button#equal");
 const btnErase = document.querySelector("button#ac");
 
 let operation = "";
 let result = "";
 let multiOperation = false;
+
 btnAdd.addEventListener("click", (event) => {
   operation = operation + "+";
   if (operation == "+") {
@@ -104,6 +106,22 @@ btnAdd.addEventListener("click", (event) => {
   } else if (operation.length == 2) {
     secondItem = Number(number);
     operation = "+";
+    result = operate(operation, firstItem, secondItem);
+    screen.textContent = `${result}`;
+    firstItem = result;
+    number = "0";
+    multiOperation = true;
+  }
+});
+
+btnMulti.addEventListener("click", (event) => {
+  operation = operation + "*";
+  if (operation == "*") {
+    firstItem = Number(number);
+    number = "0";
+  } else if (operation.length == 2) {
+    secondItem = Number(number);
+    operation = "*";
     result = operate(operation, firstItem, secondItem);
     screen.textContent = `${result}`;
     firstItem = result;
@@ -126,7 +144,7 @@ btnEqual.addEventListener("click", (event) => {
       secondItem = Number(number);
       result = operate(operation, firstItem, secondItem);
       screen.textContent = `${result}`;
-      number = result;
+      number = result.toString();
       operation = "";
       pressEqual = true;
     } else {
@@ -134,7 +152,7 @@ btnEqual.addEventListener("click", (event) => {
       result = operate(operation, firstItem, secondItem);
       screen.textContent = `${result}`;
       multiOperation = false;
-      number = result;
+      number = result.toString();
       operation = "";
     }
   } else {
