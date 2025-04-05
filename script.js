@@ -101,7 +101,7 @@ btnAdd.addEventListener("click", (event) => {
   if (operation == "+") {
     firstItem = Number(number);
     number = "0";
-  } else if (operation == "++") {
+  } else if (operation.length == 2) {
     secondItem = Number(number);
     operation = "+";
     result = operate(operation, firstItem, secondItem);
