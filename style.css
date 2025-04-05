@@ -88,3 +88,7 @@ button:active {
   opacity: 95%;
   transform: scale(98%);
 }
+
+button:disabled {
+  color: inherit !important;
+}

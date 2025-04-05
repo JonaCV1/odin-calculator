@@ -27,106 +27,119 @@ function operate(operation, numberOne, numberTwo) {
   }
 }
 
-const btnGreen = document.querySelectorAll("button.green");
-let screen = document.querySelector("div.screen");
-
-function display(event) {
-  if (value.length == 0 && event.target.id != 0 && event.target.id != ".") {
-    value = value + `${event.target.id}`;
-    screen.textContent = `${value}`;
-  } else if (
-    value.length == 0 &&
-    event.target.id != 0 &&
-    event.target.id == "."
-  ) {
-    value = value + "0.";
-    screen.textContent = `${value}`;
-  } else if (value.length <= 8 && value.length >= 1) {
-    value = value + `${event.target.id}`;
-    screen.textContent = `${value}`;
-  } else {
-    value = value;
-  }
+let number = "0";
+let firstItem = "";
+let secondItem = "";
+let pressEqual = false;
+function display() {
+  buttonsNumbers.forEach((button) => {
+    button.addEventListener("click", (event) => {
+      if (pressEqual == true) {
+        pressEqual == false;
+        number = "0";
+        if (number == "0" && event.target.id != "." && event.target.id != "0") {
+          number = "";
+          number = number + event.target.id;
+          screen.textContent = `${number}`;
+          console.log(number);
+        } else if (number != "0" && number != "" && event.target.id != ".") {
+          number = number + event.target.id;
+          screen.textContent = `${number}`;
+          console.log(number);
+        } else if (number == "0" && event.target.id == ".") {
+          number = number + event.target.id;
+          screen.textContent = `${number}`;
+          console.log(number);
+        } else if (
+          number != "0" &&
+          event.target.id == "." &&
+          number.includes(".") == false
+        ) {
+          number = number + event.target.id;
+          screen.textContent = `${number}`;
+          console.log(number);
+        }
+      } else {
+        if (number == "0" && event.target.id != "." && event.target.id != "0") {
+          number = "";
+          number = number + event.target.id;
+          screen.textContent = `${number}`;
+          console.log(number);
+        } else if (number != "0" && number != "" && event.target.id != ".") {
+          number = number + event.target.id;
+          screen.textContent = `${number}`;
+          console.log(number);
+        } else if (number == "0" && event.target.id == ".") {
+          number = number + event.target.id;
+          screen.textContent = `${number}`;
+          console.log(number);
+        } else if (
+          number != "0" &&
+          event.target.id == "." &&
+          number.includes(".") == false
+        ) {
+          number = number + event.target.id;
+          screen.textContent = `${number}`;
+          console.log(number);
+        }
+      }
+    });
+  });
 }
 
-let value = "";
-btnGreen.forEach((button) => {
-  button.addEventListener("click", (event) => {
-    if (value.includes(".") == false) {
-      display(event);
-    } else if (value.includes(".") && event.target.id != ".") {
-      display(event);
-    }
-  });
-});
-
+const buttonsNumbers = document.querySelectorAll("button.green");
+const screen = document.querySelector("div.screen");
+const btnAdd = document.querySelector("button#add");
+const btnEqual = document.querySelector("button#equal");
 const btnErase = document.querySelector("button#ac");
-btnErase.addEventListener("click", () => {
-  value = "";
-  result = "";
-  screen.textContent = `0`;
-});
-
-const btnPercentage = document.querySelector("button#percentage");
-btnPercentage.addEventListener("click", () => {
-  if (value.includes(".")) {
-    let afterDot = value.split(".");
-    if (afterDot[1].length >= 7) {
-      value = `${(Number(value) / 100).toFixed(afterDot[1].length)}`;
-    } else {
-      value = `${(Number(value) / 100).toFixed(afterDot[1].length + 2)}`;
-    }
-  } else {
-    value = `${Number(value) / 100}`;
-  }
-
-  if (value == "0" || Number(value) * 100 == 0) {
-    value = "";
-    screen.textContent = `0`;
-  } else {
-    screen.textContent = `${value}`;
-  }
-});
-
-const btnMinus = document.querySelector("button#minus");
-btnMinus.addEventListener("click", () => {
-  if (value == 0) {
-    value = "";
-    screen.textContent = `0`;
-  } else {
-    value = `${Number(value) * -1}`;
-    screen.textContent = `${value}`;
-  }
-});
 
 let operation = "";
-let numberOne = "";
-let numberTwo = "";
 let result = "";
-
-btnAdd = document.querySelector("button#add");
-btnAdd.addEventListener("click", () => {
-  if (result != "") {
-    numberOne = Number(result);
-    console.log(numberOne);
-    result = "";
-  } else {
-    numberOne = Number(value);
+let multiOperation = false;
+btnAdd.addEventListener("click", (event) => {
+  operation = operation + "+";
+  if (operation == "+") {
+    firstItem = Number(number);
+    number = "0";
+  } else if (operation == "++") {
+    secondItem = Number(number);
     operation = "+";
-    value = "";
-  }
-});
-
-btnEqual = document.querySelector("button#equal");
-btnEqual.addEventListener("click", () => {
-  if (numberOne != "") {
-    let numberTwo = Number(value);
-    result = operate(operation, numberOne, numberTwo);
+    result = operate(operation, firstItem, secondItem);
     screen.textContent = `${result}`;
+    firstItem = result;
+    number = "0";
+    multiOperation = true;
   }
-  value = "";
-  numberOne = "";
-  numberTwo = "";
 });
 
+btnErase.addEventListener("click", (event) => {
+  operation = "";
+  firstItem = "";
+  secondItem = "";
+  number = "0";
+  screen.textContent = `${number}`;
+});
+
+btnEqual.addEventListener("click", (event) => {
+  if (operation != "" && firstItem != "") {
+    if (multiOperation == false) {
+      secondItem = Number(number);
+      result = operate(operation, firstItem, secondItem);
+      screen.textContent = `${result}`;
+      number = result;
+      operation = "";
+      pressEqual = true;
+    } else {
+      secondItem = Number(number);
+      result = operate(operation, firstItem, secondItem);
+      screen.textContent = `${result}`;
+      multiOperation = false;
+      number = result;
+      operation = "";
+    }
+  } else {
+  }
+});
+
+display();
 // máximo entero . más 8 digitos
